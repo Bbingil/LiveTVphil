@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>LIVE TV PH</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background: url('https://scontent.fdvo2-1.fna.fbcdn.net/v/t39.30808-6/272910641_501179011352291_5186350740915689579_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=5f2048&_nc_eui2=AeHjDineXThzXt9eJ6he4f7M_0qS9dw8NSX_SpL13Dw1JQnZO9P142Im-sQ0FV1wcvHyW633Pqahi00lqtLPYVA0&_nc_ohc=xAm9KitkyNIQ7kNvgEipX8_&_nc_zt=23&_nc_ht=scontent.fdvo2-1.fna&oh=00_AfA0tRNrUuD8g6huEjumLtPNp0q_forK_oWY9j21M7vPhg&oe=66399B15') no-repeat center center fixed;
+            background-size: cover;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            border-radius: 8px;
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+            animation: glowing 2s infinite;
+        }
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            padding: 10px 30px 10px 10px;
+            margin-bottom: 20px;
+            width: 100%;
+            font-size: 16px;
+            font-weight: 600;
+            border: 2px solid #007BFF;
+            border-radius: 4px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"><path fill="%23007BFF" d="M7 10l5 5 5-5z"/></svg>') no-repeat;
+            background-position: right 10px center;
+            background-size: 12px;
+            background-color: #fff;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        select:hover {
+            background-color: #f8f9fa;
+        }
+        video {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+        }
+        @keyframes glowing {
+            0% { color: #333; text-shadow: none; }
+            50% { color: #fff; text-shadow: 0 0 8px #fff; }
+            100% { color: #333; text-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>LIVE TV PH</h1>
+        <center>Coded by Brent Bingil</center> 
+        <select id="channelSelect" onchange="changeChannel(this.value)">
+            <option value="https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/a2zsd.m3u8">A2Z</option>
+            <option value="https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/aljazeera_dr.m3u8">AL JAZEERA</option>
+            <option value="https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/animalplanet_qp.m3u8">ANIMAL PLANET</option>
+            <option value="https://qp-pldt-live-grp-05-prod.akamaized.net/out/u/animax_qp.m3u8">ANIMAX PHILIPPINES</option>
+            <option value="https://amdlive-ch03-ctnd-com.akamaized.net/arirang_1ch/smil:arirang_1ch.smil/playlist.m3u8">Arirang</option>
+            <option value="https://qp-pldt-live-grp-05-prod.akamaized.net/out/u/asianfoodnetwork_qp.m3u8">Asian Food Network</option>
+            <option value="https://z88.ubtvfans.com/live/rx1/1066/917914fbe52d479116c9ab03e3045dca/index.m3u8">AXN China HD</option>
+            <option value="https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/bbcearthhd_qp.m3u8">BBC Earth</option>
+            <option value="https://qp-pldt-live-grp-09-prod.akamaized.net/out/u/bbclifestyle_qp.m3u8">BBC Lifestyle</option>
+            <option value="http://cdns.jp-primehome.com:8000/zhongying/live/playlist.m3u8?cid=cs15">BBC News Asia-Pacific</option>
+            <option value="https://qp-pldt-live-grp-06-prod.akamaized.net/out/u/buko_qp.m3u8">BuKo Channel</option>
+            <option value="https://cdn1.skygo.mn/live/disk1/Boomerang/HLS-FTA/Boomerang.m3u8">Cartoonito Full HD</option>
+            <option value="https://qp-pldt-live-grp-11-prod.akamaized.net/out/u/cgtn_dr.m3u8">CGTV Doc</option>
+            <option value="https://cinemaone-abscbn-ono.amagi.tv/index.m3u8">Cinema One</option>
+            <option value="https://qp-pldt-live-grp-01-prod.akamaized.net/out/u/cinemaxhd_qp.m3u8">Cinemax|HD</option>
+            <option value="https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/cnnph_qp.m3u8">CNN PH</option>
+            <option value="https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/cnnhd_dr.m3u8">CNN HD International</option>
+            <option value="https://stream.gmanews.tv/ioslive/livestream/playlist.m3u8">DZBB</option>
+            <option value="http://143.244.60.30/ESPN/index.m3u8">ESPN</option>
+            <option value="https://qp-pldt-live-grp-13-prod.akamaized.net/out/u/discovery_dr.m3u8">DISCOVERY</option>
+            <option value="https://cdn1.skygo.mn/live/disk1/Discovery_Asia/HLS-FTA/Discovery_Asia.m3u8">DISCOVERY ASIA</option>
+            <option value="https://dreamstartv.com/hls/stream.m3u8">DREAMSTAR TV</option>
+            <option value="https://qp-pldt-live-grp-05-prod.akamaized.net/out/u/dreamworkstag_qp.m3u8">DREAMWORKS</option>
+            <option value="https://edge1.laotv.la/live/HBO/index.m3u8">HBO</option>
+            <option value="https://qp-pldt-live-grp-01-prod.akamaized.net/out/u/hbosighd_qp.m3u8">HBO PH</option>
+            <option value="https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/hbofamilyhd_qp.m3u8">HBO FAMILY</option>
+            <option value="https://qp-pldt-live-grp-11-prod.akamaized.net/out/u/historyhd_dr.m3u8">HISTORY HD</option>
+            <option value="https://qp-pldt-live-grp-08-prod.akamaized.net/out/u/hitshd_qp.m3u8">HITS HD</option>
+            <option value="https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/hitsmovies_dr.m3u8">HITS MOVIES</option>
+            <option value="https://qp-pldt-live-grp-09-prod.akamaized.net/out/u/hitsnow_qp.m3u8">HITS NOW</option>
+            <option value="https://ythls.armelin.one/channel/UC5IF8NlxMW1GkEUUqWJJBIw.m3u8">NET 25</option>
+            <option value="https://qp-pldt-live-grp-11-prod.akamaized.net/out/u/nickelodeon_dr.m3u8">NICKELODEON</option>
+            <option value="https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/nickjr_dr.m3u8">Nick. Jr</option>
+            <option value="https://qp-pldt-live-grp-05-prod.akamaized.net/out/u/onesports_qp.m3u8">ONE SPORT</option>
+            <option value="https://qp-pldt-live-grp-04-prod.akamaized.net/out/u/onenews_qp.m3u8">One News</option>
+            <option value="https://qp-pldt-live-grp-04-prod.akamaized.net/out/u/oneph_qp.m3u8">One PH</option>  
+            <option value="https://qp-pldt-live-grp-03-prod.akamaized.net/out/u/onesportsplushd_qp.m3u8">One Sports +</option>
+            <option value="https://qp-pldt-live-grp-05-prod.akamaized.net/out/u/onesports_qp.m3u8">One Sports HD</option>
+            <option value="https://qp-pldt-live-grp-01-prod.akamaized.net/out/u/pbarushhd_qp.m3u8">PBA RUSH</option>
+            <option value="https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/a2zsd.m3u8">PINOY NOONTIME</option>
+            <option value="https://qp-pldt-live-grp-13-prod.akamaized.net/out/u/rockextreme_dr.m3u8">ROCK EXTREME</option>
+            <option value="https://qp-pldt-live-grp-13-prod.akamaized.net/out/u/rockentertainment_dr.m3u8">ROCK ENTERTAINMENT</option>
+            <option value="https://qp-pldt-live-grp-06-prod.akamaized.net/out/u/tapactionflixhd_qp.m3u8">TAP ACTION</option>
+            <option value="https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/tapedge_dr.m3u8">TAP EDGE</option>
+            <option value="https://qp-pldt-live-grp-06-prod.akamaized.net/out/u/vivacinema_qp.m3u8">VIVA CINEMA</option>
+            <option value="https://qp-pldt-live-grp-12-prod.akamaized.net/out/u/pinoyboxoffice_qp.m3u8">PBO</option>
+            <option value="https://qp-pldt-live-grp-11-prod.akamaized.net/out/u/warnertvhd_dr.m3u8">WARNER TV</option>
+            <option value="https://qp-pldt-live-grp-02-prod.akamaized.net/out/u/tv5_qp.m3u8">TV5 Philippines</option>
+            <option value="https://qp-pldt-live-grp-11-prod.akamaized.net/out/u/tv5monde_dr.m3u8">TV5 Monde</option>
+            <option value="https://qp-pldt-live-grp-13-prod.akamaized.net/out/u/natgeowild_dr.m3u8">TVN MOVIES</option>
+            <option value="https://ythls.armelin.one/channel/UCJCUbMaY593_4SN1QPG7NFQ.m3u8">PTV 4</option>
+            <option value="https://qp-pldt-live-grp-01-prod.akamaized.net/out/u/celestialmoviespinoy_qp.m3u8">CELESTIAL MOVIES PINOY</option>
+            <option value="https://qp-pldt-live-grp-04-prod.akamaized.net/out/u/uaap_qp.m3u8">UAAP</option>
+            <option value="https://cinemo-abscbn-ono.amagi.tv/playlist.m3u8">CINEMO</option>
+            <option value="https://qp-pldt-live-grp-09-prod.akamaized.net/out/u/mptv_qp.m3u8">MP TV</option>
+
+        </select>
+        <video id="video" controls></video>
+    </div>
+    <script>
+        function changeChannel(channelUrl) {
+            if (Hls.isSupported()) {
+                var hls = new Hls();
+                hls.loadSource(channelUrl);
+                hls.attachMedia(video);
+                hls.on(Hls.Events.MANIFEST_PARSED, function() {
+                    video.play();
+                });
+            } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
+                video.src = channelUrl;
+                video.addEventListener('canplay', function() {
+                    video.play();
+                });
+            } else {
+                console.error('HLS not supported');
+            }
+        }
+    </script>
+    <center><div class="social-media-buttons">
+        <!-- Facebook Share Button -->
+        <a href="https://facebook.com/brentolen/" target="_blank">
+            <img src="https://img.freepik.com/premium-vector/social-media-icon-illustration-facebook-facebook-icon-vector-illustration_561158-2134.jpg?size=338&ext=jpg&ga=GA1.1.553209589.1713916800&semt=ais" alt="Share on Facebook" width="50" height="50">
+        </a>
+
+        <!-- Twitter Share Button -->
+        <a href="https://twitter.com/" target="_blank">
+            <img src="https://www.freeiconspng.com/thumbs/twitter-icon/keywords-colors-icons-desktop-icons-style-simple-3.png" alt="Share on Twitter" width="50" height="50">
+        </a>
+
+        <!-- Instagram Share Button -->
+        <a href="https://instagram.com/bgbingil/" target="_blank">
+            <img src="https://image.similarpng.com/thumbnail/2020/05/New-Instagram-icon-vector-PNG.png" alt="Share on Instagram" width="50" height="50">
+        </a>
+
+        <!-- Add more social media platforms as needed -->
+    </div>
+</body>
+</html>
